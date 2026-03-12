@@ -593,3 +593,116 @@ body {
     background: var(--uc-orange);
     transform: translateY(-2px);
 }
+
+/* --- ESTILOS DE LA VISTA PREVIA --- */
+.img-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 3px solid var(--uc-orange);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.preview-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.badge-success {
+    background: #e6fffa;
+    color: #2d3748;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-top: 8px;
+    border: 1px solid #38b2ac;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.upload-container {
+    transition: all 0.3s ease; /* Hace que el cambio de color sea fluido */
+}
+
+#statusText {
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: #003366; /* Azul UC */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    animation: slideDown 0.4s ease forwards;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- ESTILO DE LA CABECERA DEL MODAL --- */
+.modal-header {
+    display: flex;
+    justify-content: space-between; /* Empuja el título a la izquierda y la X a la derecha */
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    color: var(--uc-blue);
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+/* --- ESTILO MODERNO PARA LA "X" --- */
+.btn-close {
+    background: #f0f4f8; /* Un gris azulado muy suave de fondo */
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* La hace circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #555;
+    font-size: 1.2rem;
+}
+
+.btn-close:hover {
+    background: #ffe8e8; /* Rojo muy suave al pasar el mouse */
+    color: #e53e3e; /* Icono rojo */
+    transform: rotate(90deg); /* Un pequeño efecto de rotación */
+}
+
+.btn-close:active {
+    transform: scale(0.9); /* Efecto de pulsación al tocar */
+}

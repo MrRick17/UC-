@@ -193,7 +193,9 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2>Nuevo Reporte</h2>
-            <span class="close" onclick="cerrarModal()">&times;</span>
+            <button class="btn-close" onclick="cerrarModal()">
+        <i class="ph ph-x"></i>
+    </button>
         </div>
         <p class="modal-subtitle">Tu reporte ayuda a mejorar el campus de Bárbula.</p>
         
@@ -214,19 +216,13 @@
                 <textarea name="Descripcion" id="descFalla" placeholder="Ej: Filtración en el pasillo de ingeniería..." required></textarea>
             </div>
 
-            <div class="upload-container" onclick="document.getElementById('fileInput').click()">
-                <div class="upload-box">
-                    <i class="ph-duotone ph-camera" style="font-size: 2rem; color: var(--uc-blue);"></i>
-                    <p id="fileName" style="margin: 5px 0; font-weight: bold;">Toca para capturar evidencia</p>
-                    <small style="color: #888;">Se enviará junto a tu reporte</small>
-                </div>
-                <input type="file" 
-                    id="fileInput" 
-                    name="Evidencia" 
-                    accept="image/*" 
-                    style="display:none" 
-                    onchange="actualizarEstadoCarga(this)">
-            </div>
+            <div class="upload-container" id="areaCarga" onclick="document.getElementById('archivoEntrada').click()" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; border-radius: 15px;">
+    <div id="contenidoCarga">
+        <i class="ph ph-camera" id="iconoCamara" style="font-size: 2rem; color: #003366;"></i>
+        <p id="textoEstado" style="margin-top: 10px; font-weight: 600;">Toca para capturar evidencia</p>
+    </div>
+    <input type="file" id="archivoEntrada" name="Evidencia" accept="image/*" style="display:none" onchange="confirmarCarga(this)">
+</div>
 
             <button type="submit" class="btn-submit-modern">ENVIAR REPORTE</button>
         </form>

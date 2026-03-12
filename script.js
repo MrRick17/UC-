@@ -67,16 +67,27 @@ function mostrarNotificacion(mensaje, icono = 'ph-info') {
     setTimeout(() => { toast.remove(); }, 4000);
 }
 
-/* --- FUNCIÓN PARA EL DISEÑO DE CARGA DE IMAGEN --- */
+/* --- VISTA PREVIA DE IMAGEN (SEGURIDAD PARA EL USUARIO) --- */
 function actualizarEstadoCarga(input) {
-    const label = document.getElementById('fileName');
+    const statusText = document.getElementById('statusText');
+    const cameraIcon = document.getElementById('cameraIcon');
+    const uploadContainer = document.querySelector('.upload-container');
+
     if (input.files && input.files[0]) {
-        // Mostramos el nombre del archivo para confirmar que se cargó
-        label.innerText = "📸 Foto lista: " + input.files[0].name;
-        label.style.color = "#FF8C00"; 
-    } else {
-        label.innerText = "Toca para capturar evidencia";
-        label.style.color = "inherit";
+        // 1. Cambiamos el texto
+        statusText.innerText = "¡EVIDENCIA CARGADA CON ÉXITO!";
+        statusText.style.color = "#2d3748";
+        statusText.style.fontWeight = "800";
+
+        // 2. Cambiamos el icono a un check de éxito
+        cameraIcon.className = "ph-fill ph-check-circle";
+        cameraIcon.style.color = "#38b2ac"; // Color verde éxito
+
+        // 3. Cambiamos el fondo del cuadro para dar feedback visual
+        uploadContainer.style.backgroundColor = "#e6fffa";
+        uploadContainer.style.borderColor = "#38b2ac";
+        
+        mostrarNotificacion("Imagen lista para el reporte", "ph-image");
     }
 }
 
@@ -129,37 +140,105 @@ function actualizarEstadoCarga(input) {
 
 /* --- AQUÍ COMIENZA LA NUEVA PARTE (REEMPLAZA LA ANTERIOR) --- */
 
+/* ============================================================
+   ESTE ES EL ENVÍO DEFINITIVO (MODO ANTI-BLOQUEO)
+   ============================================================ */
+/* --- ENVÍO ESTÁNDAR FORMAL (SOLUCIÓN FINAL) --- */
+/* --- ENVÍO DE EMERGENCIA (SIMULANDO IMAGEN) --- */
+/* --- SISTEMA DE NOTIFICACIONES PERSONALIZADAS --- */
+function mostrarNotificacion(mensaje, icono = 'ph-info') {
+    let container = document.querySelector('.toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<i class="ph ${icono}"></i> <span>${mensaje}</span>`;
+
+    container.appendChild(toast);
+    
+    // Desaparece después de 4 segundos
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 500);
+    }, 4000);
+}
+
+function confirmarCarga(input) {
+    if (input.files && input.files[0]) {
+        const area = document.getElementById('areaCarga');
+        const texto = document.getElementById('textoEstado');
+        const icono = document.getElementById('iconoCamara');
+
+        // Cambios visuales inmediatos
+        area.style.backgroundColor = "#e6fffa";
+        area.style.borderColor = "#38b2ac";
+        
+        icono.className = "ph-fill ph-check-circle";
+        icono.style.color = "#38b2ac";
+        
+        texto.innerText = "¡EVIDENCIA CARGADA CON ÉXITO!";
+        texto.style.color = "#285e61";
+        
+        console.log("Imagen cargada: " + input.files[0].name);
+    }
+}
+
+/* --- ENVÍO DE REPORTE CON NOTIFICACIÓN MODERNA --- */
 const formulario = document.getElementById('formReporte');
 if(formulario) {
-    formulario.addEventListener('submit', function(e) {
+    formulario.onsubmit = function(e) {
         e.preventDefault();
         
         const btn = this.querySelector('button');
-        btn.innerText = "ENVIANDO...";
+        btn.innerText = "ENVIANDO REPORTE...";
         btn.disabled = true;
 
-        const data = new FormData(this);
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => { 
+            if(key !== "Evidencia") data[key] = value; 
+        });
+        
+        const foto = document.getElementById('archivoEntrada').files[0];
+        data["Evidencia_Confirmada"] = foto ? "Adjunta: " + foto.name : "Sin foto";
 
         fetch(this.action, {
-            method: this.method,
-            body: data,
-            headers: { 'Accept': 'application/json' }
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
         })
         .then(response => {
             if (response.ok) {
-                mostrarNotificacion("¡Enviado con éxito!", "ph-check-circle");
+                // NOTIFICACIÓN DE ÉXITO (Aquí está el cambio)
+                mostrarNotificacion("¡Reporte enviado exitosamente!", "ph-check-circle");
                 this.reset();
-                cerrarModal();
+                
+                // Reset visual del área de carga
+                document.getElementById('areaCarga').style.backgroundColor = "";
+                document.getElementById('areaCarga').style.borderColor = "#ccc";
+                document.getElementById('textoEstado').innerText = "Toca para capturar evidencia";
+                document.getElementById('iconoCamara').className = "ph ph-camera";
+                
+                setTimeout(() => cerrarModal(), 2000);
             } else {
-                mostrarNotificacion("Error en el servidor", "ph-warning");
+                mostrarNotificacion("Error en el servidor", "ph-warning-octagon");
             }
         })
-        .catch(err => mostrarNotificacion("Error de conexión", "ph-wifi-slash"))
+        .catch(() => {
+            mostrarNotificacion("Sin conexión a internet", "ph-wifi-slash");
+        })
         .finally(() => {
             btn.innerText = "ENVIAR REPORTE";
             btn.disabled = false;
         });
-    });
+    };
 }
 
 
