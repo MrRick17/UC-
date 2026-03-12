@@ -8,10 +8,9 @@
     --danger: #e74c3c;
     --success: #22c55e;
     --info: #0ea5e9;
-    --dark-grey: #333; /* Gris oscuro para texto */
+    --dark-grey: #333;
 }
 
-/* --- RESET Y CONFIGURACIÓN GENERAL --- */
 * { 
     box-sizing: border-box; 
     margin: 0; 
@@ -287,6 +286,11 @@ body {
     overflow: hidden; 
     margin-bottom: 25px; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+    cursor: pointer;
+}
+
+.news-card:hover {
+    transform: scale(1.02);
 }
 
 .news-media img { 
@@ -297,6 +301,27 @@ body {
 
 .news-body { padding: 20px; }
 .news-body h4 { color: var(--uc-blue); font-size: 1.2rem; margin: 5px 0 10px 0; }
+
+/* --- NUEVOS ESTILOS DETALLE --- */
+.btn-back {
+    background: none;
+    border: none;
+    color: var(--uc-blue);
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.detail-img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
 
 /* --- MAPA --- */
 #map-section {
@@ -357,7 +382,6 @@ body {
     cursor: pointer;
 }
 
-/* --- BOTÓN FLOTANTE (FAB) --- */
 .fab { 
     position: fixed; 
     bottom: 30px; 
@@ -376,7 +400,6 @@ body {
     cursor: pointer;
 }
 
-/* --- NUEVO FOOTER --- */
 .footer-uc {
     background: var(--uc-blue);
     color: white;

@@ -3,10 +3,34 @@ const hero = document.getElementById('hero');
 let ultimoPosteo = 0; 
 
 const noticias = [
-    { titulo: "Nuevas luminarias en el Arco", cuerpo: "Se instalaron 20 focos LED de alta potencia para mejorar la seguridad en la entrada principal nocturna.", img: "https://images.unsplash.com/photo-1517420728092-b3d171bbad31?w=600" },
-    { titulo: "Comedor Central operativo", cuerpo: "El servicio de almuerzos ya está disponible para todas las facultades de 11:30 am a 1:30 pm.", img: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=600" },
-    { titulo: "Mantenimiento en FACES", cuerpo: "Cuadrillas de limpieza iniciaron labores en el pabellón 1 de Ciencias Económicas y Sociales.", img: "https://images.unsplash.com/photo-1592595894029-001004944929?w=600" },
-    { titulo: "Ruta Universitaria Activa", cuerpo: "Se incorporan 2 nuevas unidades para la ruta Valencia-Bárbula. Consulta los horarios oficiales.", img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600" }
+    { 
+        id: 1,
+        titulo: "Nuevas luminarias en el Arco", 
+        cuerpo: "Se instalaron 20 focos LED de alta potencia para mejorar la seguridad en la entrada principal nocturna.", 
+        info: "Esta obra contempló la sustitución total del cableado subterráneo y la instalación de brazos metálicos reforzados para soportar las nuevas lámparas LED de 200W.",
+        img: "led.jpg" 
+    },
+    { 
+        id: 2,
+        titulo: "Comedor Central operativo", 
+        cuerpo: "El servicio de almuerzos ya está disponible para todas las facultades de 11:30 am a 1:30 pm.", 
+        info: "Se han habilitado todas las líneas de servicio para agilizar la entrega de bandejas. Recuerda traer tu ticket o carnet vigente para el ingreso.",
+        img: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=600" 
+    },
+    { 
+        id: 3,
+        titulo: "Mantenimiento en FACES", 
+        cuerpo: "Cuadrillas de limpieza iniciaron labores en el pabellón 1 de Ciencias Económicas y Sociales.", 
+        info: "Los trabajos incluyen desmalezamiento de áreas verdes, pintura de pasillos y recuperación de pupitres dañados para el inicio del nuevo semestre.",
+        img: "cuadrillas-de-limpieza.jpg" 
+    },
+    { 
+        id: 4,
+        titulo: "Ruta Universitaria Activa", 
+        cuerpo: "Se incorporan 2 nuevas unidades para la ruta Valencia-Bárbula. Consulta los horarios oficiales.", 
+        info: "Las nuevas unidades cuentan con aire acondicionado y mayor capacidad. Salidas programadas desde las 7:00 am hasta las 6:00 pm.",
+        img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600" 
+    }
 ];
 
 let alertasComunidad = [
@@ -51,6 +75,24 @@ function toggleSeccion(view) {
     }
 }
 
+function verDetalleNoticia(id) {
+    const n = noticias.find(item => item.id === id);
+    if(!n) return;
+
+    const detailBox = document.getElementById('newsDetailContent');
+    detailBox.innerHTML = `
+        <img src="${n.img}" class="detail-img">
+        <h2 style="color: var(--uc-blue); margin-bottom: 10px;">${n.titulo}</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; color: #555;">${n.cuerpo}</p>
+        <hr style="margin: 20px 0; opacity: 0.2;">
+        <p style="font-size: 1rem; color: #333; font-weight: 500;">${n.info}</p>
+        <div style="margin-top: 30px; padding: 15px; background: #f0f4f8; border-radius: 10px; font-size: 0.8rem;">
+            Fuente: Dirección de Medios UC | Publicado el 12 de marzo, 2026
+        </div>
+    `;
+    toggleSeccion('news-detail');
+}
+
 function publicarAlerta() {
     const input = document.getElementById('inputAlerta');
     const mensaje = input.value.trim();
@@ -91,12 +133,13 @@ function renderNoticias() {
     const list = document.getElementById('newsList');
     if(!list) return;
     list.innerHTML = noticias.map(n => `
-        <div class="news-card">
+        <div class="news-card" onclick="verDetalleNoticia(${n.id})">
             <div class="news-media"><img src="${n.img}"></div>
             <div class="news-body">
                 <span style="color: var(--uc-orange); font-size: 0.7rem; font-weight: 800;">OFICIAL UC</span>
                 <h4>${n.titulo}</h4>
                 <p>${n.cuerpo}</p>
+                <div style="margin-top:10px; color: var(--uc-blue); font-weight: 800; font-size: 0.8rem;">LEER MÁS...</div>
             </div>
         </div>
     `).join('');
