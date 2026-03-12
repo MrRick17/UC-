@@ -526,3 +526,70 @@ body {
     from { opacity: 1; transform: translateY(0); }
     to { opacity: 0; transform: translateY(-20px); }
 }
+
+/* --- DISEÑO DE CARGA MODERNO --- */
+.upload-container {
+    background: #f8f9fa;
+    border: 2px dashed #cbd5e0;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.upload-container:hover {
+    border-color: var(--uc-orange);
+    background: #fff5eb;
+}
+
+.upload-box i {
+    font-size: 2.5rem;
+    color: var(--uc-blue);
+    margin-bottom: 10px;
+}
+
+.upload-box p {
+    font-weight: 700;
+    color: var(--uc-blue);
+    margin: 0;
+}
+
+.upload-box small {
+    color: #718096;
+}
+
+/* --- DISEÑO DE CARGA MODERNO --- */
+.upload-container {
+    background: #f0f4f8;
+    border: 2px dashed #cbd5e0;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin: 15px 0;
+    transition: all 0.3s ease;
+}
+
+.upload-container:hover {
+    border-color: var(--uc-orange);
+    background: #fff5eb;
+}
+
+.btn-submit-modern {
+    width: 100%;
+    padding: 15px;
+    background: var(--uc-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit-modern:hover {
+    background: var(--uc-orange);
+    transform: translateY(-2px);
+}

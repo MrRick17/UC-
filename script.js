@@ -1,4 +1,4 @@
-/* --- CONFIGURACIÓN Y BASES DE DATOS --- */
+/* --- CONFIGURACIÓN Y BASES DE DATOS AMPLIADAS --- */
 const hero = document.getElementById('hero');
 let ultimoPosteo = 0; 
 
@@ -40,9 +40,14 @@ let alertasComunidad = [
 ];
 
 const reportesInfraestructura = [
-    { tipo: 'electric', titulo: 'Poste sin luz', ubi: 'Frente a FACE', votos: 42 },
-    { tipo: 'vial', titulo: 'Bache profundo', ubi: 'Salida hacia el Arco', votos: 28 },
-    { tipo: 'security', titulo: 'Falta de vigilancia', ubi: 'Pasillo de Química', votos: 56 }
+    { tipo: 'electric', titulo: 'Poste sin luz', ubi: 'Frente a FACE (Estacionamiento)', votos: 42 },
+    { tipo: 'vial', titulo: 'Bache profundo', ubi: 'Salida de Ingeniería hacia el Arco', votos: 28 },
+    { tipo: 'security', titulo: 'Falta de vigilancia', ubi: 'Pasillo de laboratorios de Química', votos: 56 },
+    { tipo: 'infra', titulo: 'Filtración en Techo', ubi: 'Biblioteca Central - Piso 2', votos: 15 },
+    { tipo: 'vial', titulo: 'Acera rota', ubi: 'Cerca de la parada de Odontología', votos: 7 },
+    { tipo: 'electric', titulo: 'Cable caído', ubi: 'Detrás de la Facultad de Derecho', votos: 23 },
+    { tipo: 'infra', titulo: 'Bote de aguas negras', ubi: 'Cerca del Comedor Central', votos: 89 },
+    { tipo: 'security', titulo: 'Zona muy oscura', ubi: 'Pasarela de Mañongo', votos: 64 }
 ];
 
 /* --- SISTEMA DE NOTIFICACIONES PERSONALIZADAS (TOASTS) --- */
@@ -60,6 +65,19 @@ function mostrarNotificacion(mensaje, icono = 'ph-info') {
 
     container.appendChild(toast);
     setTimeout(() => { toast.remove(); }, 4000);
+}
+
+/* --- FUNCIÓN PARA EL DISEÑO DE CARGA DE IMAGEN --- */
+function actualizarEstadoCarga(input) {
+    const label = document.getElementById('fileName');
+    if (input.files && input.files[0]) {
+        // Mostramos el nombre del archivo para confirmar que se cargó
+        label.innerText = "📸 Foto lista: " + input.files[0].name;
+        label.style.color = "#FF8C00"; 
+    } else {
+        label.innerText = "Toca para capturar evidencia";
+        label.style.color = "inherit";
+    }
 }
 
 /* --- INICIALIZACIÓN DEL MAPA --- */
@@ -103,38 +121,63 @@ function verDetalleNoticia(id) {
     toggleSeccion('news-detail');
 }
 
-/* --- LÓGICA DE REPORTES (BACKEND) --- */
+/* --- LÓGICA DE REPORTES (FIX DEFINITIVO PARA IMÁGENES) --- */
+/* --- FUNCIÓN PARA EL DISEÑO DE CARGA DE IMAGEN --- */
+function actualizarEstadoCarga(input) {
+    // ... (esta función se queda igual)
+}
+
+/* --- AQUÍ COMIENZA LA NUEVA PARTE (REEMPLAZA LA ANTERIOR) --- */
+
 const formulario = document.getElementById('formReporte');
 if(formulario) {
-    formulario.addEventListener('submit', async function(e) {
+    formulario.addEventListener('submit', function(e) {
         e.preventDefault();
+        
         const btn = this.querySelector('button');
         const originalText = btn.innerText;
-        btn.innerText = "ENVIANDO...";
+        btn.innerText = "SUBIENDO EVIDENCIA...";
         btn.disabled = true;
 
         const data = new FormData(this);
-        try {
-            const response = await fetch(this.action, {
-                method: this.method,
-                body: data,
-                headers: { 'Accept': 'application/json' }
-            });
 
+        fetch(this.action, {
+            method: this.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
             if (response.ok) {
                 mostrarNotificacion("¡Reporte enviado con éxito!", "ph-check-circle");
                 this.reset();
+                document.getElementById('fileName').innerText = "Toca para capturar evidencia";
+                document.getElementById('fileName').style.color = "inherit";
                 cerrarModal();
             } else {
-                mostrarNotificacion("Error al enviar el reporte", "ph-warning-circle");
+                return response.json().then(data => {
+                    console.error("Detalle del error:", data);
+                    throw new Error(data.error || "Error en el servidor");
+                });
             }
-        } catch (error) {
-            mostrarNotificacion("Error de conexión", "ph-wifi-slash");
-        } finally {
+        })
+        .catch(error => {
+            console.error("Error capturado:", error);
+            mostrarNotificacion("Error: Foto muy pesada o sin conexión", "ph-warning-circle");
+        })
+        .finally(() => {
             btn.innerText = originalText;
             btn.disabled = false;
-        }
+        });
     });
+}
+
+/* --- AQUÍ TERMINA LA NUEVA PARTE --- */
+
+/* --- ALERTAS COMUNITARIAS --- */
+function publicarAlerta() {
+    // ... (el resto del código sigue normal)
 }
 
 /* --- ALERTAS COMUNITARIAS --- */
