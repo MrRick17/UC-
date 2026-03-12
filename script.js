@@ -135,8 +135,7 @@ if(formulario) {
         e.preventDefault();
         
         const btn = this.querySelector('button');
-        const originalText = btn.innerText;
-        btn.innerText = "SUBIENDO EVIDENCIA...";
+        btn.innerText = "ENVIANDO...";
         btn.disabled = true;
 
         const data = new FormData(this);
@@ -144,41 +143,25 @@ if(formulario) {
         fetch(this.action, {
             method: this.method,
             body: data,
-            headers: {
-                'Accept': 'application/json'
-            }
+            headers: { 'Accept': 'application/json' }
         })
         .then(response => {
             if (response.ok) {
-                mostrarNotificacion("¡Reporte enviado con éxito!", "ph-check-circle");
+                mostrarNotificacion("¡Enviado con éxito!", "ph-check-circle");
                 this.reset();
-                document.getElementById('fileName').innerText = "Toca para capturar evidencia";
-                document.getElementById('fileName').style.color = "inherit";
                 cerrarModal();
             } else {
-                return response.json().then(data => {
-                    console.error("Detalle del error:", data);
-                    throw new Error(data.error || "Error en el servidor");
-                });
+                mostrarNotificacion("Error en el servidor", "ph-warning");
             }
         })
-        .catch(error => {
-            console.error("Error capturado:", error);
-            mostrarNotificacion("Error: Foto muy pesada o sin conexión", "ph-warning-circle");
-        })
+        .catch(err => mostrarNotificacion("Error de conexión", "ph-wifi-slash"))
         .finally(() => {
-            btn.innerText = originalText;
+            btn.innerText = "ENVIAR REPORTE";
             btn.disabled = false;
         });
     });
 }
 
-/* --- AQUÍ TERMINA LA NUEVA PARTE --- */
-
-/* --- ALERTAS COMUNITARIAS --- */
-function publicarAlerta() {
-    // ... (el resto del código sigue normal)
-}
 
 /* --- ALERTAS COMUNITARIAS --- */
 function publicarAlerta() {
