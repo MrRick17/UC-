@@ -1,0 +1,160 @@
+// 1. VARIABLES GLOBALES Y BASES DE DATOS AMPLIADAS
+const hero = document.getElementById('hero');
+let ultimoPosteo = 0; 
+
+const noticias = [
+    { titulo: "Nuevas luminarias en el Arco", cuerpo: "Se instalaron 20 focos LED de alta potencia para mejorar la seguridad en la entrada principal nocturna.", img: "https://images.unsplash.com/photo-1517420728092-b3d171bbad31?w=600" },
+    { titulo: "Comedor Central operativo", cuerpo: "El servicio de almuerzos ya está disponible para todas las facultades de 11:30 am a 1:30 pm.", img: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=600" },
+    { titulo: "Mantenimiento en FACES", cuerpo: "Cuadrillas de limpieza iniciaron labores en el pabellón 1 de Ciencias Económicas y Sociales.", img: "https://images.unsplash.com/photo-1592595894029-001004944929?w=600" },
+    { titulo: "Ruta Universitaria Activa", cuerpo: "Se incorporan 2 nuevas unidades para la ruta Valencia-Bárbula. Consulta los horarios oficiales.", img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600" }
+];
+
+let alertasComunidad = [
+    { usuario: "@FacytUser", msg: "Tubería dañada detectada rumbo a FACYT. Tomen previsiones por el barro.", fecha: "Hace 10 min" },
+    { usuario: "@IngUC", msg: "Obras en el pasillo central de Ingeniería, paso restringido por los momentos.", fecha: "Hace 25 min" },
+    { usuario: "@Mafe_Ucs", msg: "¡Ojo! El cajero del Banco de Venezuela cerca de FACE no tiene efectivo.", fecha: "Hace 1 hora" },
+    { usuario: "@RectoradoInfo", msg: "Reportan fuerte tráfico para entrar al campus por el área de Dirección de Cultura.", fecha: "Hace 2 horas" },
+    { usuario: "@EstudianteUC", msg: "Busco carnet perdido en las gradas de la cancha de Softbol. ¡Avisar!", fecha: "Hace 3 horas" }
+];
+
+const reportesInfraestructura = [
+    { tipo: 'electric', titulo: 'Poste sin luz', ubi: 'Frente a FACE (Estacionamiento)', votos: 42 },
+    { tipo: 'vial', titulo: 'Bache profundo', ubi: 'Salida de Ingeniería hacia el Arco', votos: 28 },
+    { tipo: 'infra', titulo: 'Filtración en Techo', ubi: 'Biblioteca Central - Piso 2', votos: 15 },
+    { tipo: 'security', titulo: 'Falta de vigilancia', ubi: 'Pasillo de laboratorios de Química', votos: 56 },
+    { tipo: 'vial', titulo: 'Acera rota', ubi: 'Cerca de la parada de Odontología', votos: 7 },
+    { tipo: 'electric', titulo: 'Cable caído', ubi: 'Detrás de la Facultad de Derecho', votos: 23 }
+];
+
+// 2. INICIALIZACIÓN DEL MAPA
+const map = L.map('map').setView([10.2816, -68.0044], 15);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// 3. ACCIONES Y NAVEGACIÓN
+
+function toggleSeccion(view) {
+    document.querySelectorAll('.view').forEach(s => s.classList.add('hidden'));
+    
+    const target = document.getElementById(`${view}-section`);
+    if(target) target.classList.remove('hidden');
+    
+    if (view === 'news') {
+        hero.style.display = 'flex';
+        window.scrollTo({ top: hero.offsetHeight, behavior: 'smooth' });
+    } else {
+        hero.style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    if(view === 'map') {
+        setTimeout(() => { map.invalidateSize(); }, 250);
+    }
+}
+
+function publicarAlerta() {
+    const input = document.getElementById('inputAlerta');
+    const mensaje = input.value.trim();
+    const ahora = Date.now();
+    
+    if (mensaje === "") return;
+
+    if (ahora - ultimoPosteo < 180000) {
+        const segundosRestantes = Math.ceil((180000 - (ahora - ultimoPosteo)) / 1000);
+        alert(`Sistema Anti-Spam: Espera ${Math.floor(segundosRestantes/60)}m ${segundosRestantes%60}s.`);
+        return;
+    }
+
+    const nuevaAlerta = { usuario: "@ComunidadUC", msg: mensaje, fecha: "Ahora mismo" };
+    alertasComunidad.unshift(nuevaAlerta);
+    ultimoPosteo = ahora;
+    input.value = "";
+    renderAlertas();
+    actualizarEstadisticas();
+}
+
+function actualizarEstadisticas() {
+    const totalReportes = reportesInfraestructura.length + alertasComunidad.length;
+    
+    const valorPrincipal = document.querySelector('.stat-value');
+    if(valorPrincipal) valorPrincipal.innerText = totalReportes;
+
+    const criticos = reportesInfraestructura.filter(r => r.tipo === 'vial' || r.tipo === 'security').length;
+    const miniValores = document.querySelectorAll('.mini-data strong');
+    
+    if(miniValores.length > 0) {
+        miniValores[0].innerText = criticos; 
+        miniValores[2].innerText = Math.floor(totalReportes * 0.6); 
+    }
+}
+
+function renderNoticias() {
+    const list = document.getElementById('newsList');
+    if(!list) return;
+    list.innerHTML = noticias.map(n => `
+        <div class="news-card">
+            <div class="news-media"><img src="${n.img}"></div>
+            <div class="news-body">
+                <span style="color: var(--uc-orange); font-size: 0.7rem; font-weight: 800;">OFICIAL UC</span>
+                <h4>${n.titulo}</h4>
+                <p>${n.cuerpo}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderAlertas() {
+    const list = document.getElementById('alertsList');
+    if(!list) return;
+    list.innerHTML = alertasComunidad.map(a => `
+        <div class="alert-card">
+            <div class="alert-header" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <strong style="color: var(--uc-blue);">${a.usuario}</strong> 
+                <span style="font-size: 0.75rem; color: #999;">${a.fecha}</span>
+            </div>
+            <p style="font-size: 0.9rem; line-height: 1.4;">${a.msg}</p>
+        </div>
+    `).join('');
+}
+
+function renderReportes() {
+    const list = document.getElementById('reportsList');
+    if(!list) return;
+    list.innerHTML = reportesInfraestructura.map(r => `
+        <div class="news-card" style="margin-bottom: 12px; padding: 18px; display: flex; align-items: center; gap: 15px; border-left: 4px solid var(--uc-blue);">
+            <div style="background: #f0f4f8; padding: 12px; border-radius: 12px;">
+                <i class="ph ${r.tipo === 'electric' ? 'ph-lightning' : r.tipo === 'vial' ? 'ph-road-horizon' : r.tipo === 'security' ? 'ph-shield-warning' : 'ph-drop'}" style="font-size: 1.6rem; color: var(--uc-blue);"></i>
+            </div>
+            <div style="flex: 1;">
+                <h4 style="margin: 0; font-size: 1rem; font-weight: 700;">${r.titulo}</h4>
+                <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #777;"><i class="ph ph-map-pin"></i> ${r.ubi}</p>
+            </div>
+            <div style="text-align: center; background: #fff4e6; padding: 5px 10px; border-radius: 8px;">
+                <div style="font-weight: 800; color: var(--uc-orange); font-size: 0.9rem;"><i class="ph ph-caret-up"></i> ${r.votos}</div>
+                <span style="font-size: 0.6rem; color: var(--uc-orange); font-weight: bold; text-transform: uppercase;">votos</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function abrirModal() { document.getElementById('modalReporte').style.display = 'block'; }
+function cerrarModal() { document.getElementById('modalReporte').style.display = 'none'; }
+
+window.addEventListener('scroll', () => {
+    if (hero.style.display !== 'none') {
+        let scrollPos = window.scrollY;
+        let heroHeight = hero.offsetHeight;
+        if (scrollPos < heroHeight) {
+            hero.style.opacity = 1 - (scrollPos / heroHeight);
+            hero.style.filter = `blur(${scrollPos * 0.03}px)`;
+        }
+    }
+});
+
+function inicializarApp() {
+    renderNoticias();
+    renderReportes();
+    renderAlertas();
+    actualizarEstadisticas(); 
+}
+
+inicializarApp();

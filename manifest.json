@@ -1,0 +1,21 @@
+{
+"name": "UC Responde",
+"short_name": "UC Responde",
+"description": "Portal oficial de reportes de la Universidad de Carabobo",
+"start_url": "./index.html",
+"display": "standalone",
+"background_color": "#F8F9FA",
+"theme_color": "#003366",
+"icons": [
+    {
+    "src": "UC_logo.jpg",
+    "sizes": "192x192",
+    "type": "image/jpeg"
+    },
+    {
+    "src": "UC_logo.jpg",
+    "sizes": "512x512",
+    "type": "image/jpeg"
+    }
+]
+}

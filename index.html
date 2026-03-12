@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UC Responde - Portal Oficial</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+</head>
+<body>
+
+    <section id="hero" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <img src="UC_logo.jpg" alt="Logo UC" class="hero-logo">
+            <h1>UC <span>Responde</span></h1>
+            <p>Información oficial y acción comunitaria para la Universidad de Carabobo.</p>
+            <div class="scroll-down">
+                <span>Desliza para ver noticias</span>
+                <i class="ph ph-caret-double-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <nav class="navbar">
+        <div class="logo">UC <span>Responde</span></div>
+        <div class="nav-actions">
+            <i class="ph ph-house" onclick="toggleSeccion('news')" title="Inicio"></i>
+            <i class="ph ph-megaphone" onclick="toggleSeccion('feed')" title="Reportes"></i>
+            <i class="ph ph-map-trifold" onclick="toggleSeccion('map')" title="Mapa"></i>
+            <i class="ph ph-warning-circle" onclick="toggleSeccion('alerts')" title="Alertas"></i>
+            <i class="ph ph-chart-line" onclick="toggleSeccion('stats')" title="Estadísticas"></i>
+        </div>
+    </nav>
+
+    <main class="app-content">
+        <section id="news-section" class="view">
+            <div class="feed-section">
+                <div class="feed-header">
+                    <h3>📢 Noticias y Avances UC</h3>
+                </div>
+                <div id="newsList"></div>
+            </div>
+        </section>
+
+        <section id="feed-section" class="view hidden">
+            <div class="feed-section">
+                <div class="feed-header">
+                    <h3>📋 Reportes de Infraestructura</h3>
+                </div>
+                <div id="reportsList"></div>
+            </div>
+        </section>
+
+        <section id="map-section" class="view hidden">
+            <div class="feed-section">
+                <div class="feed-header">
+                    <h3>📍 Mapa de Incidencias Campus</h3>
+                </div>
+                <div id="map"></div>
+            </div>
+        </section>
+
+        <section id="alerts-section" class="view hidden">
+            <div class="feed-section">
+                <div class="feed-header">
+                    <h3>🚨 Comunidad en Vivo</h3>
+                </div>
+                
+                <div class="quick-post-container">
+                    <input type="text" id="inputAlerta" placeholder="¿Viste algo? Avísale a la comunidad...">
+                    <button onclick="publicarAlerta()"><i class="ph ph-paper-plane-right"></i></button>
+                </div>
+
+                <div id="alertsList"></div>
+            </div>
+        </section>
+
+        <section id="stats-section" class="view hidden">
+            <div class="feed-section">
+                <div class="feed-header">
+                    <h3>📊 Dashboard de Gestión Campus</h3>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-main-card">
+                        <div class="stat-info">
+                            <span class="stat-label">Reportes Totales</span>
+                            <h2 class="stat-value">84</h2>
+                            <p class="stat-trend positive"><i class="ph ph-trend-up"></i> +12% esta semana</p>
+                        </div>
+                        <div class="stat-chart-sim">
+                            <div class="bar" style="height: 40%"></div>
+                            <div class="bar" style="height: 60%"></div>
+                            <div class="bar" style="height: 85%"></div>
+                            <div class="bar" style="height: 50%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid-modern">
+                        <div class="stat-card-mini">
+                            <div class="icon-circle danger">
+                                <i class="ph ph-warning"></i>
+                            </div>
+                            <div class="mini-data">
+                                <strong>12</strong>
+                                <span>Zonas Críticas</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-mini">
+                            <div class="icon-circle info">
+                                <i class="ph ph-lightbulb"></i>
+                            </div>
+                            <div class="mini-data">
+                                <strong>65%</strong>
+                                <span>Luz Operativa</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-mini">
+                            <div class="icon-circle success">
+                                <i class="ph ph-check-circle"></i>
+                            </div>
+                            <div class="mini-data">
+                                <strong>48</strong>
+                                <span>Solucionados</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <span>Meta de Recuperación Campus</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                        <p>Faltan 12 reportes resueltos para alcanzar el objetivo mensual.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-uc">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <img src="UC_logo.jpg" alt="Logo UC small">
+                    <div class="brand-text">
+                        <h4>Universidad de Carabobo</h4>
+                        <p>Dirección de Prevención y Protección</p>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <a href="https://www.uc.edu.ve" target="_blank">Portal UC</a>
+                    <a href="#">Privacidad</a>
+                    <a href="#">Contacto</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 UC Responde. Desarrollado para la comunidad de Bárbula.</p>
+                <div class="footer-social">
+                    <i class="ph-bold ph-instagram-logo"></i>
+                    <i class="ph-bold ph-twitter-logo"></i>
+                    <i class="ph-bold ph-facebook-logo"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="fab" onclick="abrirModal()">
+        <i class="ph ph-plus"></i>
+        <span>REPORTAR</span>
+    </button>
+
+    <div id="modalReporte" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Reporte</h2>
+                <span class="close" onclick="cerrarModal()">&times;</span>
+            </div>
+            <p class="modal-subtitle">Envía tu reporte directamente a Planta Física</p>
+            <form id="formReporte">
+                <div class="input-group">
+                    <label>¿Qué deseas reportar?</label>
+                    <select id="tipoFalla">
+                        <option value="electric">Falla de Alumbrado</option>
+                        <option value="vial">Bache / Vialidad</option>
+                        <option value="infra">Filtración Estructural</option>
+                        <option value="security">Zona de Riesgo</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Descripción detallada</label>
+                    <textarea id="descFalla" placeholder="Ej: Filtración en el pasillo de ingeniería..." required></textarea>
+                </div>
+                <div class="camera-box-modern">
+                    <i class="ph ph-camera"></i>
+                    <p>Capturar Evidencia</p>
+                    <input type="file" accept="image/*" capture="camera">
+                </div>
+                <button type="submit" class="btn-submit-modern">ENVIAR A PLANTA FÍSICA</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
