@@ -1,4 +1,4 @@
-// 1. VARIABLES GLOBALES Y BASES DE DATOS AMPLIADAS
+/* --- CONFIGURACIÓN Y BASES DE DATOS --- */
 const hero = document.getElementById('hero');
 let ultimoPosteo = 0; 
 
@@ -7,58 +7,68 @@ const noticias = [
         id: 1,
         titulo: "Nuevas luminarias en el Arco", 
         cuerpo: "Se instalaron 20 focos LED de alta potencia para mejorar la seguridad en la entrada principal nocturna.", 
-        info: "Esta obra contempló la sustitución total del cableado subterráneo y la instalación de brazos metálicos reforzados para soportar las nuevas lámparas LED de 200W.",
+        info: "Esta obra contempló la sustitución total del cableado subterráneo y la instalación de lámparas LED de 200W, mejorando la visibilidad un 80%.",
         img: "led.jpg" 
     },
     { 
         id: 2,
         titulo: "Comedor Central operativo", 
         cuerpo: "El servicio de almuerzos ya está disponible para todas las facultades de 11:30 am a 1:30 pm.", 
-        info: "Se han habilitado todas las líneas de servicio para agilizar la entrega de bandejas. Recuerda traer tu ticket o carnet vigente para el ingreso.",
+        info: "Se han habilitado todas las líneas de servicio. Recuerda traer tu ticket o carnet vigente para agilizar el ingreso.",
         img: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=600" 
     },
     { 
         id: 3,
         titulo: "Mantenimiento en FACES", 
         cuerpo: "Cuadrillas de limpieza iniciaron labores en el pabellón 1 de Ciencias Económicas y Sociales.", 
-        info: "Los trabajos incluyen desmalezamiento de áreas verdes, pintura de pasillos y recuperación de pupitres dañados para el inicio del nuevo semestre.",
+        info: "Los trabajos incluyen desmalezamiento, pintura de pasillos y recuperación de mobiliario para el inicio del semestre.",
         img: "cuadrillas-de-limpieza.jpg" 
     },
     { 
         id: 4,
         titulo: "Ruta Universitaria Activa", 
-        cuerpo: "Se incorporan 2 nuevas unidades para la ruta Valencia-Bárbula. Consulta los horarios oficiales.", 
-        info: "Las nuevas unidades cuentan con aire acondicionado y mayor capacidad. Salidas programadas desde las 7:00 am hasta las 6:00 pm.",
+        cuerpo: "Se incorporan 2 nuevas unidades para la ruta Valencia-Bárbula.", 
+        info: "Unidades con mayor capacidad y aire acondicionado. Salidas programadas desde las 7:00 am en la parada principal.",
         img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600" 
     }
 ];
 
 let alertasComunidad = [
-    { usuario: "@FacytUser", msg: "Tubería dañada detectada rumbo a FACYT. Tomen previsiones por el barro.", fecha: "Hace 10 min" },
-    { usuario: "@IngUC", msg: "Obras en el pasillo central de Ingeniería, paso restringido por los momentos.", fecha: "Hace 25 min" },
-    { usuario: "@Mafe_Ucs", msg: "¡Ojo! El cajero del Banco de Venezuela cerca de FACE no tiene efectivo.", fecha: "Hace 1 hora" },
-    { usuario: "@RectoradoInfo", msg: "Reportan fuerte tráfico para entrar al campus por el área de Dirección de Cultura.", fecha: "Hace 2 horas" },
-    { usuario: "@EstudianteUC", msg: "Busco carnet perdido en las gradas de la cancha de Softbol. ¡Avisar!", fecha: "Hace 3 horas" }
+    { usuario: "@FacytUser", msg: "Tubería dañada detectada rumbo a FACYT. Tomen previsiones.", fecha: "Hace 10 min" },
+    { usuario: "@IngUC", msg: "Obras en el pasillo central de Ingeniería, paso restringido.", fecha: "Hace 25 min" },
+    { usuario: "@Mafe_Ucs", msg: "¡Ojo! El cajero del Banco de Venezuela cerca de FACE no tiene efectivo.", fecha: "Hace 1 hora" }
 ];
 
 const reportesInfraestructura = [
-    { tipo: 'electric', titulo: 'Poste sin luz', ubi: 'Frente a FACE (Estacionamiento)', votos: 42 },
-    { tipo: 'vial', titulo: 'Bache profundo', ubi: 'Salida de Ingeniería hacia el Arco', votos: 28 },
-    { tipo: 'infra', titulo: 'Filtración en Techo', ubi: 'Biblioteca Central - Piso 2', votos: 15 },
-    { tipo: 'security', titulo: 'Falta de vigilancia', ubi: 'Pasillo de laboratorios de Química', votos: 56 },
-    { tipo: 'vial', titulo: 'Acera rota', ubi: 'Cerca de la parada de Odontología', votos: 7 },
-    { tipo: 'electric', titulo: 'Cable caído', ubi: 'Detrás de la Facultad de Derecho', votos: 23 }
+    { tipo: 'electric', titulo: 'Poste sin luz', ubi: 'Frente a FACE', votos: 42 },
+    { tipo: 'vial', titulo: 'Bache profundo', ubi: 'Salida hacia el Arco', votos: 28 },
+    { tipo: 'security', titulo: 'Falta de vigilancia', ubi: 'Pasillo de Química', votos: 56 }
 ];
 
-// 2. INICIALIZACIÓN DEL MAPA
+/* --- SISTEMA DE NOTIFICACIONES PERSONALIZADAS (TOASTS) --- */
+function mostrarNotificacion(mensaje, icono = 'ph-info') {
+    let container = document.querySelector('.toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<i class="ph ${icono}"></i> <span>${mensaje}</span>`;
+
+    container.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 4000);
+}
+
+/* --- INICIALIZACIÓN DEL MAPA --- */
 const map = L.map('map').setView([10.2816, -68.0044], 15);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// 3. ACCIONES Y NAVEGACIÓN
-
+/* --- NAVEGACIÓN Y VISTAS --- */
 function toggleSeccion(view) {
     document.querySelectorAll('.view').forEach(s => s.classList.add('hidden'));
-    
     const target = document.getElementById(`${view}-section`);
     if(target) target.classList.remove('hidden');
     
@@ -93,6 +103,41 @@ function verDetalleNoticia(id) {
     toggleSeccion('news-detail');
 }
 
+/* --- LÓGICA DE REPORTES (BACKEND) --- */
+const formulario = document.getElementById('formReporte');
+if(formulario) {
+    formulario.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = this.querySelector('button');
+        const originalText = btn.innerText;
+        btn.innerText = "ENVIANDO...";
+        btn.disabled = true;
+
+        const data = new FormData(this);
+        try {
+            const response = await fetch(this.action, {
+                method: this.method,
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                mostrarNotificacion("¡Reporte enviado con éxito!", "ph-check-circle");
+                this.reset();
+                cerrarModal();
+            } else {
+                mostrarNotificacion("Error al enviar el reporte", "ph-warning-circle");
+            }
+        } catch (error) {
+            mostrarNotificacion("Error de conexión", "ph-wifi-slash");
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+}
+
+/* --- ALERTAS COMUNITARIAS --- */
 function publicarAlerta() {
     const input = document.getElementById('inputAlerta');
     const mensaje = input.value.trim();
@@ -102,7 +147,7 @@ function publicarAlerta() {
 
     if (ahora - ultimoPosteo < 180000) {
         const segundosRestantes = Math.ceil((180000 - (ahora - ultimoPosteo)) / 1000);
-        alert(`Sistema Anti-Spam: Espera ${Math.floor(segundosRestantes/60)}m ${segundosRestantes%60}s.`);
+        mostrarNotificacion(`Espera ${Math.floor(segundosRestantes/60)}m ${segundosRestantes%60}s.`, "ph-clock");
         return;
     }
 
@@ -112,11 +157,12 @@ function publicarAlerta() {
     input.value = "";
     renderAlertas();
     actualizarEstadisticas();
+    mostrarNotificacion("Alerta publicada", "ph-megaphone");
 }
 
+/* --- RENDERS Y ESTADÍSTICAS --- */
 function actualizarEstadisticas() {
     const totalReportes = reportesInfraestructura.length + alertasComunidad.length;
-    
     const valorPrincipal = document.querySelector('.stat-value');
     if(valorPrincipal) valorPrincipal.innerText = totalReportes;
 
@@ -179,6 +225,7 @@ function renderReportes() {
     `).join('');
 }
 
+/* --- EVENTOS UI --- */
 function abrirModal() { document.getElementById('modalReporte').style.display = 'block'; }
 function cerrarModal() { document.getElementById('modalReporte').style.display = 'none'; }
 

@@ -190,35 +190,36 @@
     </button>
 
     <div id="modalReporte" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Nuevo Reporte</h2>
-                <span class="close" onclick="cerrarModal()">&times;</span>
-            </div>
-            <p class="modal-subtitle">Envía tu reporte directamente a Planta Física</p>
-            <form id="formReporte">
-                <div class="input-group">
-                    <label>¿Qué deseas reportar?</label>
-                    <select id="tipoFalla">
-                        <option value="electric">Falla de Alumbrado</option>
-                        <option value="vial">Bache / Vialidad</option>
-                        <option value="infra">Filtración Estructural</option>
-                        <option value="security">Zona de Riesgo</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Descripción detallada</label>
-                    <textarea id="descFalla" placeholder="Ej: Filtración en el pasillo de ingeniería..." required></textarea>
-                </div>
-                <div class="camera-box-modern">
-                    <i class="ph ph-camera"></i>
-                    <p>Capturar Evidencia</p>
-                    <input type="file" accept="image/*" capture="camera">
-                </div>
-                <button type="submit" class="btn-submit-modern">ENVIAR A PLANTA FÍSICA</button>
-            </form>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Nuevo Reporte</h2>
+            <span class="close" onclick="cerrarModal()">&times;</span>
         </div>
+        <p class="modal-subtitle">Envía tu reporte directamente a Planta Física</p>
+        
+        <form id="formReporte" action="https://formspree.io/f/xnjgvjew" method="POST">
+            <div class="input-group">
+                <label>¿Qué deseas reportar?</label>
+                <select name="Tipo_Falla" id="tipoFalla">
+                    <option value="Alumbrado">Falla de Alumbrado</option>
+                    <option value="Vialidad">Bache / Vialidad</option>
+                    <option value="Infraestructura">Filtración Estructural</option>
+                    <option value="Seguridad">Zona de Riesgo</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Descripción detallada</label>
+                <textarea name="Descripcion" id="descFalla" placeholder="Ej: Filtración en el pasillo de ingeniería..." required></textarea>
+            </div>
+            <div class="camera-box-modern">
+                <i class="ph ph-camera"></i>
+                <p>Capturar Evidencia</p>
+                <input type="file" name="Evidencia_Foto" accept="image/*" capture="camera">
+            </div>
+            <button type="submit" class="btn-submit-modern">ENVIAR REPORTE</button>
+        </form>
     </div>
+</div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
