@@ -807,5 +807,16 @@ body {
     transform: none;
 }
 
+/* Fuerza que el scroll se resetee correctamente */
+html, body {
+    /* Cambia 'smooth' por 'auto' para que el salto sea instantáneo y preciso */
+    scroll-behavior: auto !important; 
+    overflow-x: hidden;
+}
 
-
+/* Si usas un contenedor principal para las vistas */
+.view {
+    overflow-y: auto;
+    height: 100%;
+    scroll-behavior: auto !important; /* Desactiva el smooth momentáneamente para evitar rebotes */
+}

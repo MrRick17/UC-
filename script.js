@@ -40,6 +40,17 @@ function verDetalleNoticia(id) {
     if(!n) return;
     
     const detailBox = document.getElementById('newsDetailContent');
+    // ... tu código de innerHTML ...
+    
+    // Llamamos a la navegación
+    toggleSeccion('news-detail');
+
+    // Refuerzo extra específico para el detalle
+    setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 50);
+
+    
     
     // Creamos el bloque de mucho texto de relleno con estilo profesional
     const textoExtenso = `
@@ -77,6 +88,38 @@ function verDetalleNoticia(id) {
     
     // Cambiamos a la vista de detalle
     toggleSeccion('news-detail');
+}
+
+function toggleSeccion(view) {
+    // 1. Ocultar todas las secciones
+    document.querySelectorAll('.view').forEach(s => {
+        s.classList.add('hidden');
+    });
+
+    // 2. Mostrar la sección destino
+    const target = document.getElementById(`${view}-section`);
+    if(target) {
+        target.classList.remove('hidden');
+    }
+
+    // 3. Control del Hero
+    const hero = document.getElementById('hero');
+    if(hero) hero.style.display = (view === 'news') ? 'flex' : 'none';
+
+    // --- LA SOLUCIÓN MAESTRA: El retraso de ejecución ---
+    // Usamos 10ms para que el navegador primero pinte el cambio y luego haga el scroll
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        
+        // Si el contenedor tiene scroll interno, lo reseteamos también
+        if(target) target.scrollTop = 0;
+    }, 10);
+
+    if(view === 'map') {
+        setTimeout(() => { map.invalidateSize(); }, 300);
+    }
 }
 
 
