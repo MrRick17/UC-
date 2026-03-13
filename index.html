@@ -12,6 +12,19 @@
     <meta name="theme-color" content="#003366">
 </head>
 <body>
+   <div id="loginOverlay" class="view" style="position: fixed; top:0; left:0; width:100%; height:100%; background: var(--uc-blue); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+        <h2 style="color: var(--uc-blue); margin-bottom: 10px; font-weight: 800;">UC Responde</h2>
+        <p style="color: #666; margin-bottom: 25px; font-size: 0.9rem;">Identifícate para acceder al sistema de reportes.</p>
+        
+        <form id="formLogin" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="text" id="nombreUsuario" placeholder="Nombre" required style="padding: 14px; border: 1px solid #eee; border-radius: 12px; background: #f8f9fa;">
+            <input type="text" id="apellidoUsuario" placeholder="Apellido" required style="padding: 14px; border: 1px solid #eee; border-radius: 12px; background: #f8f9fa;">
+            <input type="email" id="correoUsuario" placeholder="Correo @uc.edu.ve" required style="padding: 14px; border: 1px solid #eee; border-radius: 12px; background: #f8f9fa;">
+            <button type="submit" style="background: var(--uc-orange); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(246, 177, 10, 0.3);">INGRESAR</button>
+        </form>
+    </div>
+</div>
 
     <section id="hero" class="hero-section">
         <div class="hero-overlay"></div>
@@ -77,7 +90,7 @@
         <section id="alerts-section" class="view hidden">
             <div class="feed-section">
                 <div class="feed-header">
-                    <h3>🚨 Comunidad en Vivo</h3>
+                    <h3 style="color: #fff;">🚨 Comunidad en Vivo</h3>
                 </div>
                 
                 <div class="quick-post-container">
@@ -224,7 +237,12 @@
     <input type="file" id="archivoEntrada" name="Evidencia" accept="image/*" style="display:none" onchange="confirmarCarga(this)">
 </div>
 
-            <button type="submit" class="btn-submit-modern">ENVIAR REPORTE</button>
+            <form id="formReporte" action="https://formspree.io/f/turespuesta" method="POST">
+                <button type="submit" id="btnEnviar">
+    <span>ENVIAR REPORTE</span>
+    <i class="ph-fill ph-paper-plane-tilt"></i>
+</button>
+            </form>
         </form>
     </div>
 </div>

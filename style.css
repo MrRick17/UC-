@@ -706,3 +706,106 @@ body {
 .btn-close:active {
     transform: scale(0.9); /* Efecto de pulsación al tocar */
 }
+
+/* --- ACTUALIZACIÓN DE IMAGEN PRINCIPAL (HÉROE) --- */
+#hero {
+    background-image: url('abstract-blur-defocused-bookshelf-library.jpg'); /* Usa la imagen borrosa proporcionada */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Opcional: efecto de paralaje suave */
+}
+
+/* --- ESTILO PARA TARJETAS DE NOTICIAS CON SOMBRA --- */
+.news-card {
+    transition: box-shadow 0.3s ease; /* Transición suave para el efecto hover */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra sutil predeterminada */
+    background: white; /* Asegura un fondo sólido para que la sombra destaque */
+}
+
+/* Efecto opcional al pasar el mouse */
+.news-card:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2); /* Sombra más pronunciada al pasar el mouse */
+}
+
+/* --- IMAGEN DE FONDO (HÉROE) --- */
+#hero {
+    background-image: linear-gradient(rgba(0,51,102,0.3), rgba(0,51,102,0.3)), url('abstract-blur-defocused-bookshelf-library.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* --- TARJETAS CON SOMBRA --- */
+
+
+.news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.12);
+}
+
+/* --- NOTIFICACIONES (TOASTS) --- */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: #003366;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    animation: slideDown 0.4s ease forwards;
+}
+
+/* --- BOTÓN DE ENVÍO ESTILO PREMIUM --- */
+#btnEnviar {
+    width: 100%;
+    padding: 16px;
+    margin-top: 15px;
+    background: linear-gradient(135deg, var(--uc-orange) 0%, #e67e22 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#btnEnviar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
+    filter: brightness(1.1);
+}
+
+#btnEnviar:active {
+    transform: scale(0.96); /* Efecto de pulsación al hacer clic */
+    box-shadow: 0 2px 10px rgba(230, 126, 34, 0.2);
+}
+
+#btnEnviar:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+
+

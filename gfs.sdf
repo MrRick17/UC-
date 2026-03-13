@@ -1,0 +1,5 @@
+function votarReporte(index) {
+    reportesInfraestructura[index].votos++;
+    renderReportes();
+    mostrarNotificacion("¡Gracias por tu voto!", "ph-heart");
+}
